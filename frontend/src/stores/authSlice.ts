@@ -24,11 +24,11 @@ const initialState: MainState = {
 };
 
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
-  async (creds: Record<string, string>) => {
-    const response = await axios.post('auth/signin/local', creds);
-    return response.data;
-  },
+    'auth/loginUser',
+    async (creds: Record<string, string>) => {
+      const response = await axios.post('auth/signin/local', creds);
+      return response.data;
+    },
 );
 export const findMe = createAsyncThunk('auth/findMe', async () => {
   const response = await axios.get('auth/me');
