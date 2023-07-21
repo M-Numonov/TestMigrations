@@ -34,6 +34,14 @@ name: {
 
   subscription_plans.associate = (db) => {
 
+    db.subscription_plans.belongsTo(db.subscription_plans, {
+      as: 'next_subscription_plan',
+      foreignKey: {
+        name: 'next_subscription_planId',
+      },
+      constraints: false,
+    });
+
     db.subscription_plans.belongsTo(db.users, {
       as: 'createdBy',
     });

@@ -29,6 +29,10 @@ module.exports = class Subscription_plansDBApi {
   { transaction },
   );
 
+    await subscription_plans.setNext_subscription_plan(data.next_subscription_plan || null, {
+    transaction,
+    });
+
   return subscription_plans;
   }
 
@@ -52,6 +56,10 @@ module.exports = class Subscription_plansDBApi {
       },
       {transaction},
     );
+
+    await subscription_plans.setNext_subscription_plan(data.next_subscription_plan || null, {
+      transaction,
+    });
 
     return subscription_plans;
   }
@@ -89,6 +97,10 @@ module.exports = class Subscription_plansDBApi {
 
     const output = subscription_plans.get({plain: true});
 
+    output.next_subscription_plan = await subscription_plans.getNext_subscription_plan({
+      transaction
+    });
+
     return output;
   }
 
@@ -104,6 +116,11 @@ module.exports = class Subscription_plansDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
+      {
+        model: db.subscription_plans,
+        as: 'next_subscription_plan',
+      },
 
     ];
 
@@ -137,6 +154,17 @@ module.exports = class Subscription_plansDBApi {
           active:
             filter.active === true ||
             filter.active === 'true',
+        };
+      }
+
+      if (filter.next_subscription_plan) {
+        var listItems = filter.next_subscription_plan.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          next_subscription_planId: {[Op.or]: listItems}
         };
       }
 
