@@ -13,14 +13,29 @@ module.exports = {
 
                     await queryInterface.addColumn(
                       'subscription_plans',
-                      'next_subscription_planId',
+                      'trial_period',
                       {
-                          type: Sequelize.DataTypes.UUID,
+                          type: Sequelize.DataTypes.INTEGER,
 
-                            references: {
-                                model: 'subscription_plans',
-                                key: 'id',
-                            },
+                      },
+                      { transaction }
+                    );
+
+                    await queryInterface.addColumn(
+                      'customers',
+                      'current_period_starts',
+                      {
+                          type: Sequelize.DataTypes.DATE,
+
+                      },
+                      { transaction }
+                    );
+
+                    await queryInterface.addColumn(
+                      'customers',
+                      'current_period_ends',
+                      {
+                          type: Sequelize.DataTypes.DATE,
 
                       },
                       { transaction }
@@ -45,8 +60,20 @@ module.exports = {
         try {
 
                     await queryInterface.removeColumn(
+                        'customers',
+                        'current_period_ends',
+                        { transaction }
+                    );
+
+                    await queryInterface.removeColumn(
+                        'customers',
+                        'current_period_starts',
+                        { transaction }
+                    );
+
+                    await queryInterface.removeColumn(
                         'subscription_plans',
-                        'next_subscription_planId',
+                        'trial_period',
                         { transaction }
                     );
 
