@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   const transactions = sequelize.define(
     'transactions',
     {
@@ -14,19 +14,16 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
-name: {
+      name: {
         type: DataTypes.TEXT,
-
       },
 
-amount: {
+      amount: {
         type: DataTypes.TEXT,
-
       },
 
-quantity: {
+      quantity: {
         type: DataTypes.INTEGER,
-
       },
 
       importHash: {
@@ -43,7 +40,6 @@ quantity: {
   );
 
   transactions.associate = (db) => {
-
     db.transactions.belongsTo(db.subscription_plans, {
       as: 'subscriptionPlan',
       foreignKey: {
@@ -63,4 +59,3 @@ quantity: {
 
   return transactions;
 };
-

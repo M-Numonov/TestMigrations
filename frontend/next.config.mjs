@@ -1,9 +1,9 @@
 /**
  * @type {import('next').NextConfig}
  */
- const nextConfig = {
-trailingSlash: true,
-  basePath: "",
+const nextConfig = {
+  trailingSlash: true,
+  basePath: '',
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -13,6 +13,6 @@ trailingSlash: true,
       },
     ],
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

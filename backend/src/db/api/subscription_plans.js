@@ -1,4 +1,3 @@
-
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -8,36 +7,34 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class Subscription_plansDBApi {
-
   static async create(data, options) {
-  const currentUser = (options && options.currentUser) || { id: null };
-  const transaction = (options && options.transaction) || undefined;
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
 
-  const subscription_plans = await db.subscription_plans.create(
-  {
-  id: data.id || undefined,
+    const subscription_plans = await db.subscription_plans.create(
+      {
+        id: data.id || undefined,
 
-    name: data.name
-    ||
-    null
-,
+        name: data.name || null,
+        importHash: data.importHash || null,
+        createdById: currentUser.id,
+        updatedById: currentUser.id,
+      },
+      { transaction },
+    );
 
-  importHash: data.importHash || null,
-  createdById: currentUser.id,
-  updatedById: currentUser.id,
-  },
-  { transaction },
-  );
+    await subscription_plans.setNext_subscription_plan(
+      data.next_subscription_plan || null,
+      {
+        transaction,
+      },
+    );
 
-    await subscription_plans.setNext_subscription_plan(data.next_subscription_plan || null, {
-    transaction,
-    });
-
-  return subscription_plans;
+    return subscription_plans;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
     const subscription_plans = await db.subscription_plans.findByPk(id, {
@@ -46,38 +43,42 @@ module.exports = class Subscription_plansDBApi {
 
     await subscription_plans.update(
       {
-
-        name: data.name
-        ||
-        null
-,
-
+        name: data.name || null,
         updatedById: currentUser.id,
       },
-      {transaction},
+      { transaction },
     );
 
-    await subscription_plans.setNext_subscription_plan(data.next_subscription_plan || null, {
-      transaction,
-    });
+    await subscription_plans.setNext_subscription_plan(
+      data.next_subscription_plan || null,
+      {
+        transaction,
+      },
+    );
 
     return subscription_plans;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const subscription_plans = await db.subscription_plans.findByPk(id, options);
+    const subscription_plans = await db.subscription_plans.findByPk(
+      id,
+      options,
+    );
 
-    await subscription_plans.update({
-      deletedBy: currentUser.id
-    }, {
-      transaction,
-    });
+    await subscription_plans.update(
+      {
+        deletedBy: currentUser.id,
+      },
+      {
+        transaction,
+      },
+    );
 
     await subscription_plans.destroy({
-      transaction
+      transaction,
     });
 
     return subscription_plans;
@@ -95,11 +96,12 @@ module.exports = class Subscription_plansDBApi {
       return subscription_plans;
     }
 
-    const output = subscription_plans.get({plain: true});
+    const output = subscription_plans.get({ plain: true });
 
-    output.next_subscription_plan = await subscription_plans.getNext_subscription_plan({
-      transaction
-    });
+    output.next_subscription_plan =
+      await subscription_plans.getNext_subscription_plan({
+        transaction,
+      });
 
     return output;
   }
@@ -116,12 +118,10 @@ module.exports = class Subscription_plansDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
-
       {
         model: db.subscription_plans,
         as: 'next_subscription_plan',
       },
-
     ];
 
     if (filter) {
@@ -135,11 +135,7 @@ module.exports = class Subscription_plansDBApi {
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike(
-            'subscription_plans',
-            'name',
-            filter.name,
-          ),
+          [Op.and]: Utils.ilike('subscription_plans', 'name', filter.name),
         };
       }
 
@@ -151,20 +147,18 @@ module.exports = class Subscription_plansDBApi {
       ) {
         where = {
           ...where,
-          active:
-            filter.active === true ||
-            filter.active === 'true',
+          active: filter.active === true || filter.active === 'true',
         };
       }
 
       if (filter.next_subscription_plan) {
-        var listItems = filter.next_subscription_plan.split('|').map(item => {
-          return  Utils.uuid(item)
+        var listItems = filter.next_subscription_plan.split('|').map((item) => {
+          return Utils.uuid(item);
         });
 
         where = {
           ...where,
-          next_subscription_planId: {[Op.or]: listItems}
+          next_subscription_planId: { [Op.or]: listItems },
         };
       }
 
@@ -193,35 +187,39 @@ module.exports = class Subscription_plansDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly ? {rows: [], count: await db.subscription_plans.count({
+    let { rows, count } = options?.countOnly
+      ? {
+          rows: [],
+          count: await db.subscription_plans.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order: (filter.field && filter.sort)
+            order:
+              filter.field && filter.sort
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-        },
-    )} : await db.subscription_plans.findAndCountAll(
-        {
-            where,
-            include,
-            distinct: true,
-            limit: limit ? Number(limit) : undefined,
-            offset: offset ? Number(offset) : undefined,
-            order: (filter.field && filter.sort)
-                ? [[filter.field, filter.sort]]
-                : [['createdAt', 'desc']],
-            transaction,
-        },
-    );
+          }),
+        }
+      : await db.subscription_plans.findAndCountAll({
+          where,
+          include,
+          distinct: true,
+          limit: limit ? Number(limit) : undefined,
+          offset: offset ? Number(offset) : undefined,
+          order:
+            filter.field && filter.sort
+              ? [[filter.field, filter.sort]]
+              : [['createdAt', 'desc']],
+          transaction,
+        });
 
-//    rows = await this._fillWithRelationsAndFilesForRows(
-//      rows,
-//      options,
-//    );
+    //    rows = await this._fillWithRelationsAndFilesForRows(
+    //      rows,
+    //      options,
+    //    );
 
     return { rows, count };
   }
@@ -233,17 +231,13 @@ module.exports = class Subscription_plansDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike(
-            'subscription_plans',
-            'name',
-            query,
-          ),
+          Utils.ilike('subscription_plans', 'name', query),
         ],
       };
     }
 
     const records = await db.subscription_plans.findAll({
-      attributes: [ 'id', 'name' ],
+      attributes: ['id', 'name'],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['name', 'ASC']],
@@ -254,6 +248,4 @@ module.exports = class Subscription_plansDBApi {
       label: record.name,
     }));
   }
-
 };
-
