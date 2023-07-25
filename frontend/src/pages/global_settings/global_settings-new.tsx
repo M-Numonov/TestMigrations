@@ -53,6 +53,10 @@ const TablesPage = () => {
 
 name: '',
 
+subscription_expiry_notification_days: '',
+
+billing_cycle_grace_period: '',
+
             }}
             onSubmit={(values) => handleSubmit(values)}
           >
@@ -66,6 +70,26 @@ name: '',
           placeholder="Your Name"
       />
   </FormField>
+
+    <FormField
+        label="Subscription Expiry Notification Days"
+    >
+        <Field
+            type="number"
+            name="subscription_expiry_notification_days"
+            placeholder="Your Subscription Expiry Notification Days"
+        />
+    </FormField>
+
+    <FormField
+        label="Billing Cycle Grace Period"
+    >
+        <Field
+            type="number"
+            name="billing_cycle_grace_period"
+            placeholder="Your Billing Cycle Grace Period"
+        />
+    </FormField>
 
               <BaseDivider />
               <BaseButtons>

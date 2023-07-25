@@ -247,6 +247,10 @@ const TableSampleGlobal_settings = ({ filterItems, setFilterItems, filters }) =>
 
             <th>Name</th>
 
+            <th>Subscription Expiry Notification Days</th>
+
+            <th>Billing Cycle Grace Period</th>
+
             <th>Actions</th>
             <th />
           </tr>
@@ -258,6 +262,14 @@ const TableSampleGlobal_settings = ({ filterItems, setFilterItems, filters }) =>
 
                 <td data-label="name">
                   { item.name }
+                </td>
+
+                <td data-label="subscription_expiry_notification_days">
+                  { item.subscription_expiry_notification_days }
+                </td>
+
+                <td data-label="billing_cycle_grace_period">
+                  { item.billing_cycle_grace_period }
                 </td>
 
                 <td className="before:hidden lg:w-1 whitespace-nowrap">

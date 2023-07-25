@@ -19,6 +19,16 @@ name: {
 
       },
 
+subscription_expiry_notification_days: {
+        type: DataTypes.INTEGER,
+
+      },
+
+billing_cycle_grace_period: {
+        type: DataTypes.INTEGER,
+
+      },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,

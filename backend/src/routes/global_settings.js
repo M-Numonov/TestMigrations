@@ -20,6 +20,13 @@ const { parse } = require('json2csv');
  *            type: string
  *            default: name
 
+ *          subscription_expiry_notification_days:
+ *            type: integer
+ *            format: int64
+ *          billing_cycle_grace_period:
+ *            type: integer
+ *            format: int64
+
  */
 
 /**
@@ -196,6 +203,7 @@ router.get('/', wrapAsync(async (req, res) => {
   );
   if (filetype && filetype === 'csv') {
     const fields = ['id','name',
+        'subscription_expiry_notification_days','billing_cycle_grace_period',
 
         ];
     const opts = { fields };

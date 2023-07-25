@@ -22,6 +22,16 @@ module.exports = class Global_settingsDBApi {
     null
 ,
 
+    subscription_expiry_notification_days: data.subscription_expiry_notification_days
+    ||
+    null
+,
+
+    billing_cycle_grace_period: data.billing_cycle_grace_period
+    ||
+    null
+,
+
   importHash: data.importHash || null,
   createdById: currentUser.id,
   updatedById: currentUser.id,
@@ -44,6 +54,16 @@ module.exports = class Global_settingsDBApi {
       {
 
         name: data.name
+        ||
+        null
+,
+
+        subscription_expiry_notification_days: data.subscription_expiry_notification_days
+        ||
+        null
+,
+
+        billing_cycle_grace_period: data.billing_cycle_grace_period
         ||
         null
 ,
@@ -124,6 +144,54 @@ module.exports = class Global_settingsDBApi {
             filter.name,
           ),
         };
+      }
+
+      if (filter.subscription_expiry_notification_daysRange) {
+        const [start, end] = filter.subscription_expiry_notification_daysRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            subscription_expiry_notification_days: {
+              ...where.subscription_expiry_notification_days,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            subscription_expiry_notification_days: {
+              ...where.subscription_expiry_notification_days,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.billing_cycle_grace_periodRange) {
+        const [start, end] = filter.billing_cycle_grace_periodRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            billing_cycle_grace_period: {
+              ...where.billing_cycle_grace_period,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            billing_cycle_grace_period: {
+              ...where.billing_cycle_grace_period,
+              [Op.lte]: end,
+            },
+          };
+        }
       }
 
       if (

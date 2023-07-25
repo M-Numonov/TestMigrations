@@ -15,6 +15,7 @@ const Global_settingsTablesPage = () => {
   const [filterItems, setFilterItems] = React.useState([]);
 
   const [filters] = React.useState([{label: 'Name', title: 'name'},
+          {label: 'Subscription Expiry Notification Days', title: 'subscription_expiry_notification_days', number: 'true'},{label: 'Billing Cycle Grace Period', title: 'billing_cycle_grace_period', number: 'true'},
 
   ]);
 
