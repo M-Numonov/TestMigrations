@@ -7,6 +7,7 @@ import usersSlice from "./users/usersSlice";
 import subscription_plansSlice from "./subscription_plans/subscription_plansSlice";
 import transactionsSlice from "./transactions/transactionsSlice";
 import customersSlice from "./customers/customersSlice";
+import global_settingsSlice from "./global_settings/global_settingsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ users: usersSlice,
 subscription_plans: subscription_plansSlice,
 transactions: transactionsSlice,
 customers: customersSlice,
+global_settings: global_settingsSlice,
   },
 })
 

@@ -22,6 +22,8 @@ const transactionsRoutes = require('./routes/transactions');
 
 const customersRoutes = require('./routes/customers');
 
+const global_settingsRoutes = require('./routes/global_settings');
+
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -78,6 +80,8 @@ app.use('/api/subscription_plans', passport.authenticate('jwt', {session: false}
 app.use('/api/transactions', passport.authenticate('jwt', {session: false}), transactionsRoutes);
 
 app.use('/api/customers', passport.authenticate('jwt', {session: false}), customersRoutes);
+
+app.use('/api/global_settings', passport.authenticate('jwt', {session: false}), global_settingsRoutes);
 
 const publicDir = path.join(
   __dirname,

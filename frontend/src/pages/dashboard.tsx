@@ -19,15 +19,17 @@ const Dashboard = () => {
     const [subscription_plans, setSubscription_plans] = React.useState('Loading...');
     const [transactions, setTransactions] = React.useState('Loading...');
     const [customers, setCustomers] = React.useState('Loading...');
+    const [global_settings, setGlobal_settings] = React.useState('Loading...');
 
     async function loadData() {
-        const fns = [setUsers,setSubscription_plans,setTransactions,setCustomers,];
+        const fns = [setUsers,setSubscription_plans,setTransactions,setCustomers,setGlobal_settings,];
 
         const responseUsers = await axios.get(`/users/count`);
         const responseSubscription_plans = await axios.get(`/subscription_plans/count`);
         const responseTransactions = await axios.get(`/transactions/count`);
         const responseCustomers = await axios.get(`/customers/count`);
-        Promise.all([responseUsers,responseSubscription_plans,responseTransactions,responseCustomers,])
+        const responseGlobal_settings = await axios.get(`/global_settings/count`);
+        Promise.all([responseUsers,responseSubscription_plans,responseTransactions,responseCustomers,responseGlobal_settings,])
           .then((res) => res.map((el) => el.data))
           .then((data) => data.forEach((el, i) => fns[i](el.count)));
     }
@@ -135,6 +137,32 @@ const Dashboard = () => {
                           </div>
                           <div className="text-3xl leading-tight font-semibold">
                             {customers}
+                          </div>
+                      </div>
+                      <div>
+                          <BaseIcon
+                              className="text-blue-500"
+                              w="w-16"
+                              h="h-16"
+                              size={48}
+                              path={mdiInformation}
+                          />
+                      </div>
+                  </div>
+              </div>
+            </Link>
+
+            <Link href={'/global_settings/global_settings-list'} className='mr-3'>
+              <div
+                  className="rounded dark:bg-gray-900/70 bg-white border border-pavitra-400 p-6"
+              >
+                  <div className="flex justify-between align-center">
+                      <div>
+                          <div className="text-lg leading-tight text-gray-500 dark:text-gray-400">
+                            Global_settings
+                          </div>
+                          <div className="text-3xl leading-tight font-semibold">
+                            {global_settings}
                           </div>
                       </div>
                       <div>

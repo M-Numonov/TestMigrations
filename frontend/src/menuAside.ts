@@ -40,6 +40,11 @@ const menuAside: MenuAsideItem[] = [
       icon: mdiTable,
   }, 
   {
+      href: '/global_settings/global_settings-list',
+      label: 'Global settings',
+      icon: mdiTable,
+  }, 
+  {
     href: '/profile',
     label: 'Profile',
     icon: mdiAccountCircle,
