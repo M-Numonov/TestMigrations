@@ -11,20 +11,17 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
     try {
       await queryInterface.addColumn(
-        'global_settings',
-        'subscription_expiry_notification_days',
+        'customers',
+        'next_subscription_plan',
         {
-          type: Sequelize.DataTypes.INTEGER,
+          type: Sequelize.DataTypes.TEXT,
         },
         { transaction },
       );
 
-      await queryInterface.addColumn(
-        'global_settings',
-        'billing_cycle_grace_period',
-        {
-          type: Sequelize.DataTypes.INTEGER,
-        },
+      await queryInterface.removeColumn(
+        'subscription_plans',
+        'next_subscription_planId',
         { transaction },
       );
 
@@ -45,17 +42,23 @@ module.exports = {
      */
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.removeColumn(
-        'global_settings',
-        'billing_cycle_grace_period',
+      await queryInterface.addColumn(
+        'subscription_plans',
+        'next_subscription_planId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'subscription_plans',
+            key: 'id',
+          },
+        },
         { transaction },
       );
 
-      await queryInterface.removeColumn(
-        'global_settings',
-        'subscription_expiry_notification_days',
-        { transaction },
-      );
+      await queryInterface.removeColumn('customers', 'next_subscription_plan', {
+        transaction,
+      });
 
       await transaction.commit();
     } catch (err) {

@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { useAppSelector } from '../stores/hooks';
 import UserAvatar from './UserAvatar';
 
@@ -8,24 +8,24 @@ type Props = {
 };
 
 export default function UserAvatarCurrentUser({
-                                                className = '',
-                                                children,
-                                              }: Props) {
+  className = '',
+  children,
+}: Props) {
   const userName = useAppSelector((state) => state.main.userName);
   const userAvatar = useAppSelector((state) => state.main.userAvatar);
   const { currentUser, isFetching, token } = useAppSelector(
-      (state) => state.auth,
+    (state) => state.auth,
   );
   const { users, loading } = useAppSelector((state) => state.users);
 
-  const [ avatar, setAvatar ] = useState(null)
+  const [avatar, setAvatar] = useState(null);
 
   useEffect(() => {
-    currentUserAvatarCheck()
+    currentUserAvatarCheck();
   }, []);
 
   useEffect(() => {
-    currentUserAvatarCheck()
+    currentUserAvatarCheck();
   }, [currentUser?.id, users]);
 
   const currentUserAvatarCheck = () => {
@@ -34,11 +34,16 @@ export default function UserAvatarCurrentUser({
       const image = user?.avatar;
       setAvatar(image);
     }
-  }
+  };
 
   return (
-      <UserAvatar username={userName} avatar={userAvatar} className={className} image={avatar}>
-        {children}
-      </UserAvatar>
+    <UserAvatar
+      username={userName}
+      avatar={userAvatar}
+      className={className}
+      image={avatar}
+    >
+      {children}
+    </UserAvatar>
   );
 }

@@ -1,13 +1,13 @@
-import React, { ReactNode } from 'react'
-import { useAppSelector } from '../stores/hooks'
+import React, { ReactNode } from 'react';
+import { useAppSelector } from '../stores/hooks';
 
 type Props = {
-  zIndex?: string
-  type?: string
-  children?: ReactNode
-  className?: string
-  onClick: (e: React.MouseEvent) => void
-}
+  zIndex?: string;
+  type?: string;
+  children?: ReactNode;
+  className?: string;
+  onClick: (e: React.MouseEvent) => void;
+};
 
 export default function OverlayLayer({
   zIndex = 'z-50',
@@ -16,15 +16,15 @@ export default function OverlayLayer({
   className,
   ...props
 }: Props) {
-  const overlayStyle = useAppSelector((state) => state.style.overlayStyle)
+  const overlayStyle = useAppSelector((state) => state.style.overlayStyle);
 
   const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (props.onClick) {
-      props.onClick(e)
+      props.onClick(e);
     }
-  }
+  };
 
   return (
     <div
@@ -37,5 +37,5 @@ export default function OverlayLayer({
 
       {children}
     </div>
-  )
+  );
 }
