@@ -43,6 +43,8 @@ const EditCustomers = () => {
 
     current_period_ends: new Date(),
 
+    next_subscription_plan: '',
+
   }
   const [initialValues, setInitialValues] = useState(initVals)
 
@@ -132,6 +134,19 @@ const EditCustomers = () => {
               onChange={(date) => setInitialValues({...initialValues, 'current_period_ends': date})}
           />
       </FormField>
+
+    <FormField label='Next Subscription Plan' labelFor='next_subscription_plan'>
+        <Field
+            name='next_subscription_plan'
+            id='next_subscription_plan'
+            component={SelectField}
+            options={initialValues.next_subscription_plan}
+            itemRef={'subscription_plans'}
+
+            showField={'name'}
+
+        ></Field>
+    </FormField>
 
               <BaseDivider />
 

@@ -57,6 +57,8 @@ current_period_starts: '',
 
 current_period_ends: '',
 
+next_subscription_plan: '',
+
             }}
             onSubmit={(values) => handleSubmit(values)}
           >
@@ -89,6 +91,10 @@ current_period_ends: '',
           name="current_period_ends"
           placeholder="Your Current Period Ends"
       />
+  </FormField>
+
+  <FormField label="Next Subscription Plan" labelFor="next_subscription_plan">
+      <Field name="next_subscription_plan" id="next_subscription_plan" component={SelectField} options={[]} itemRef={'subscription_plans'}></Field>
   </FormField>
 
               <BaseDivider />

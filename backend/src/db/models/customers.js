@@ -44,6 +44,14 @@ current_period_ends: {
 
   customers.associate = (db) => {
 
+    db.customers.belongsTo(db.subscription_plans, {
+      as: 'next_subscription_plan',
+      foreignKey: {
+        name: 'next_subscription_planId',
+      },
+      constraints: false,
+    });
+
     db.customers.belongsTo(db.users, {
       as: 'createdBy',
     });

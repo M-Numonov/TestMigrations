@@ -16,6 +16,7 @@ const CustomersTablesPage = () => {
 
   const [filters] = React.useState([{label: 'Name', title: 'name'},
 
+          {label: 'Next Subscription Plan', title: 'next_subscription_plan'},
   ]);
 
     const addFilter = () => {

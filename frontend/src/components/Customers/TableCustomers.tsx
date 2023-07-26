@@ -251,6 +251,8 @@ const TableSampleCustomers = ({ filterItems, setFilterItems, filters }) => {
 
             <th>Current Period Ends</th>
 
+            <th>Next Subscription Plan</th>
+
             <th>Actions</th>
             <th />
           </tr>
@@ -270,6 +272,10 @@ const TableSampleCustomers = ({ filterItems, setFilterItems, filters }) => {
 
                 <td data-label="current_period_ends">
                   { dataFormatter.dateTimeFormatter(item.current_period_ends) }
+                </td>
+
+                <td data-label="next_subscription_plan">
+                  { dataFormatter.subscription_plansOneListFormatter(item.next_subscription_plan) }
                 </td>
 
                 <td className="before:hidden lg:w-1 whitespace-nowrap">
