@@ -10,8 +10,8 @@ import {
   mdiThemeLightDark,
   mdiGithub,
   mdiVuejs,
-} from '@mdi/js';
-import { MenuNavBarItem } from './interfaces';
+} from '@mdi/js'
+import { MenuNavBarItem } from './interfaces'
 
 const menuNavBar: MenuNavBarItem[] = [
   {
@@ -52,6 +52,6 @@ const menuNavBar: MenuNavBarItem[] = [
     isDesktopNoLabel: true,
     isLogout: true,
   },
-];
+]
 
-export default menuNavBar;
+export default menuNavBar

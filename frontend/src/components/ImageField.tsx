@@ -23,13 +23,11 @@ export default function ImageField({
 
   return (
     <div className={className}>
-      {imageSrc && (
-        <img
+      {imageSrc && <img
           src={imageSrc}
           alt={name}
           className='rounded-full block h-auto w-full max-w-full bg-gray-100 dark:bg-slate-800'
-        />
-      )}
+      />}
 
       {children}
     </div>

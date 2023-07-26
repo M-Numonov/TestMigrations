@@ -1,69 +1,75 @@
 module.exports = {
-  /**
-   * @param {QueryInterface} queryInterface
-   * @param {Sequelize} Sequelize
-   * @returns {Promise<void>}
-   */
-  async up(queryInterface, Sequelize) {
     /**
-     * @type {Transaction}
+     * @param {QueryInterface} queryInterface
+     * @param {Sequelize} Sequelize
+     * @returns {Promise<void>}
      */
-    const transaction = await queryInterface.sequelize.transaction();
-    try {
-      await queryInterface.addColumn(
-        'customers',
-        'next_subscription_plan',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
+    async up(queryInterface, Sequelize) {
+        /**
+         * @type {Transaction}
+         */
+        const transaction = await queryInterface.sequelize.transaction();
+        try {
 
-      await queryInterface.removeColumn(
-        'subscription_plans',
-        'next_subscription_planId',
-        { transaction },
-      );
+                    await queryInterface.addColumn(
+                      'customers',
+                      'next_subscription_plan',
+                      {
+                          type: Sequelize.DataTypes.TEXT,
 
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-      throw err;
-    }
-  },
-  /**
-   * @param {QueryInterface} queryInterface
-   * @param {Sequelize} Sequelize
-   * @returns {Promise<void>}
-   */
-  async down(queryInterface, Sequelize) {
+                      },
+                      { transaction }
+                    );
+
+                    await queryInterface.removeColumn(
+                        'subscription_plans',
+                        'next_subscription_planId',
+                        { transaction }
+                    );
+
+            await transaction.commit();
+        } catch (err) {
+            await transaction.rollback();
+            throw err;
+        }
+    },
     /**
-     * @type {Transaction}
+     * @param {QueryInterface} queryInterface
+     * @param {Sequelize} Sequelize
+     * @returns {Promise<void>}
      */
-    const transaction = await queryInterface.sequelize.transaction();
-    try {
-      await queryInterface.addColumn(
-        'subscription_plans',
-        'next_subscription_planId',
-        {
-          type: Sequelize.DataTypes.UUID,
+    async down(queryInterface, Sequelize) {
+        /**
+         * @type {Transaction}
+         */
+        const transaction = await queryInterface.sequelize.transaction();
+        try {
 
-          references: {
-            model: 'subscription_plans',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
+                    await queryInterface.addColumn(
+                      'subscription_plans',
+                      'next_subscription_planId',
+                      {
+                          type: Sequelize.DataTypes.UUID,
 
-      await queryInterface.removeColumn('customers', 'next_subscription_plan', {
-        transaction,
-      });
+                            references: {
+                                model: 'subscription_plans',
+                                key: 'id',
+                            },
 
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-      throw err;
+                      },
+                      { transaction }
+                    );
+
+                    await queryInterface.removeColumn(
+                        'customers',
+                        'next_subscription_plan',
+                        { transaction }
+                    );
+
+            await transaction.commit();
+        } catch (err) {
+            await transaction.rollback();
+            throw err;
+        }
     }
-  },
 };

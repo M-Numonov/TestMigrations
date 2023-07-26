@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,30 +8,42 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class CustomersDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const customers = await db.customers.create(
-      {
-        id: data.id || undefined,
+  const customers = await db.customers.create(
+  {
+  id: data.id || undefined,
 
-        name: data.name || null,
-        current_period_starts: data.current_period_starts || null,
-        current_period_ends: data.current_period_ends || null,
-        next_subscription_plan: data.next_subscription_plan || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    name: data.name
+    ||
+    null
+,
 
-    return customers;
+    current_period_starts: data.current_period_starts
+    ||
+    null
+,
+
+    current_period_ends: data.current_period_ends
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return customers;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const customers = await db.customers.findByPk(id, {
@@ -39,35 +52,44 @@ module.exports = class CustomersDBApi {
 
     await customers.update(
       {
-        name: data.name || null,
-        current_period_starts: data.current_period_starts || null,
-        current_period_ends: data.current_period_ends || null,
-        next_subscription_plan: data.next_subscription_plan || null,
+
+        name: data.name
+        ||
+        null
+,
+
+        current_period_starts: data.current_period_starts
+        ||
+        null
+,
+
+        current_period_ends: data.current_period_ends
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return customers;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const customers = await db.customers.findByPk(id, options);
 
-    await customers.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await customers.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await customers.destroy({
-      transaction,
+      transaction
     });
 
     return customers;
@@ -76,13 +98,16 @@ module.exports = class CustomersDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const customers = await db.customers.findOne({ where }, { transaction });
+    const customers = await db.customers.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!customers) {
       return customers;
     }
 
-    const output = customers.get({ plain: true });
+    const output = customers.get({plain: true});
 
     return output;
   }
@@ -98,7 +123,9 @@ module.exports = class CustomersDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -111,17 +138,10 @@ module.exports = class CustomersDBApi {
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('customers', 'name', filter.name),
-        };
-      }
-
-      if (filter.next_subscription_plan) {
-        where = {
-          ...where,
           [Op.and]: Utils.ilike(
             'customers',
-            'next_subscription_plan',
-            filter.next_subscription_plan,
+            'name',
+            filter.name,
           ),
         };
       }
@@ -182,7 +202,9 @@ module.exports = class CustomersDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -211,39 +233,35 @@ module.exports = class CustomersDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly
-      ? {
-          rows: [],
-          count: await db.customers.count({
+    let { rows, count } = options?.countOnly ? {rows: [], count: await db.customers.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order:
-              filter.field && filter.sort
+            order: (filter.field && filter.sort)
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-          }),
-        }
-      : await db.customers.findAndCountAll({
-          where,
-          include,
-          distinct: true,
-          limit: limit ? Number(limit) : undefined,
-          offset: offset ? Number(offset) : undefined,
-          order:
-            filter.field && filter.sort
-              ? [[filter.field, filter.sort]]
-              : [['createdAt', 'desc']],
-          transaction,
-        });
+        },
+    )} : await db.customers.findAndCountAll(
+        {
+            where,
+            include,
+            distinct: true,
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+            order: (filter.field && filter.sort)
+                ? [[filter.field, filter.sort]]
+                : [['createdAt', 'desc']],
+            transaction,
+        },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -255,13 +273,17 @@ module.exports = class CustomersDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('customers', 'name', query),
+          Utils.ilike(
+            'customers',
+            'name',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.customers.findAll({
-      attributes: ['id', 'name'],
+      attributes: [ 'id', 'name' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['name', 'ASC']],
@@ -272,4 +294,6 @@ module.exports = class CustomersDBApi {
       label: record.name,
     }));
   }
+
 };
+

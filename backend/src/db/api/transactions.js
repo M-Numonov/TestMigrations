@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,33 +8,46 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class TransactionsDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const transactions = await db.transactions.create(
-      {
-        id: data.id || undefined,
+  const transactions = await db.transactions.create(
+  {
+  id: data.id || undefined,
 
-        name: data.name || null,
-        amount: data.amount || null,
-        quantity: data.quantity || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    name: data.name
+    ||
+    null
+,
+
+    amount: data.amount
+    ||
+    null
+,
+
+    quantity: data.quantity
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
 
     await transactions.setSubscriptionPlan(data.subscriptionPlan || null, {
-      transaction,
+    transaction,
     });
 
-    return transactions;
+  return transactions;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const transactions = await db.transactions.findByPk(id, {
@@ -42,12 +56,25 @@ module.exports = class TransactionsDBApi {
 
     await transactions.update(
       {
-        name: data.name || null,
-        amount: data.amount || null,
-        quantity: data.quantity || null,
+
+        name: data.name
+        ||
+        null
+,
+
+        amount: data.amount
+        ||
+        null
+,
+
+        quantity: data.quantity
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     await transactions.setSubscriptionPlan(data.subscriptionPlan || null, {
@@ -58,22 +85,19 @@ module.exports = class TransactionsDBApi {
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const transactions = await db.transactions.findByPk(id, options);
 
-    await transactions.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await transactions.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await transactions.destroy({
-      transaction,
+      transaction
     });
 
     return transactions;
@@ -91,10 +115,10 @@ module.exports = class TransactionsDBApi {
       return transactions;
     }
 
-    const output = transactions.get({ plain: true });
+    const output = transactions.get({plain: true});
 
     output.subscriptionPlan = await transactions.getSubscriptionPlan({
-      transaction,
+      transaction
     });
 
     return output;
@@ -112,10 +136,12 @@ module.exports = class TransactionsDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
       {
         model: db.subscription_plans,
         as: 'subscriptionPlan',
       },
+
     ];
 
     if (filter) {
@@ -129,14 +155,22 @@ module.exports = class TransactionsDBApi {
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('transactions', 'name', filter.name),
+          [Op.and]: Utils.ilike(
+            'transactions',
+            'name',
+            filter.name,
+          ),
         };
       }
 
       if (filter.amount) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('transactions', 'amount', filter.amount),
+          [Op.and]: Utils.ilike(
+            'transactions',
+            'amount',
+            filter.amount,
+          ),
         };
       }
 
@@ -172,18 +206,20 @@ module.exports = class TransactionsDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
       if (filter.subscriptionPlan) {
-        var listItems = filter.subscriptionPlan.split('|').map((item) => {
-          return Utils.uuid(item);
+        var listItems = filter.subscriptionPlan.split('|').map(item => {
+          return  Utils.uuid(item)
         });
 
         where = {
           ...where,
-          subscriptionPlanId: { [Op.or]: listItems },
+          subscriptionPlanId: {[Op.or]: listItems}
         };
       }
 
@@ -212,39 +248,35 @@ module.exports = class TransactionsDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly
-      ? {
-          rows: [],
-          count: await db.transactions.count({
+    let { rows, count } = options?.countOnly ? {rows: [], count: await db.transactions.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order:
-              filter.field && filter.sort
+            order: (filter.field && filter.sort)
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-          }),
-        }
-      : await db.transactions.findAndCountAll({
-          where,
-          include,
-          distinct: true,
-          limit: limit ? Number(limit) : undefined,
-          offset: offset ? Number(offset) : undefined,
-          order:
-            filter.field && filter.sort
-              ? [[filter.field, filter.sort]]
-              : [['createdAt', 'desc']],
-          transaction,
-        });
+        },
+    )} : await db.transactions.findAndCountAll(
+        {
+            where,
+            include,
+            distinct: true,
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+            order: (filter.field && filter.sort)
+                ? [[filter.field, filter.sort]]
+                : [['createdAt', 'desc']],
+            transaction,
+        },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -256,13 +288,17 @@ module.exports = class TransactionsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('transactions', 'name', query),
+          Utils.ilike(
+            'transactions',
+            'name',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.transactions.findAll({
-      attributes: ['id', 'name'],
+      attributes: [ 'id', 'name' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['name', 'ASC']],
@@ -273,4 +309,6 @@ module.exports = class TransactionsDBApi {
       label: record.name,
     }));
   }
+
 };
+

@@ -4,17 +4,17 @@ export const chartColors = {
     info: '#209CEE',
     danger: '#FF3860',
   },
-};
+}
 
 const randomChartData = (n: number) => {
-  const data = [];
+  const data = []
 
   for (let i = 0; i < n; i++) {
-    data.push(Math.round(Math.random() * 200));
+    data.push(Math.round(Math.random() * 200))
   }
 
-  return data;
-};
+  return data
+}
 
 const datasetObject = (color: string, points: number) => {
   return {
@@ -33,14 +33,14 @@ const datasetObject = (color: string, points: number) => {
     data: randomChartData(points),
     tension: 0.5,
     cubicInterpolationMode: 'default',
-  };
-};
+  }
+}
 
 export const sampleChartData = (points = 9) => {
-  const labels = [];
+  const labels = []
 
   for (let i = 1; i <= points; i++) {
-    labels.push(`0${i}`);
+    labels.push(`0${i}`)
   }
 
   return {
@@ -50,5 +50,5 @@ export const sampleChartData = (points = 9) => {
       datasetObject('info', points),
       datasetObject('danger', points),
     ],
-  };
-};
+  }
+}
