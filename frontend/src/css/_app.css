@@ -19,8 +19,7 @@ li.stack-item:not(:last-child):after {
   @apply inline-block pl-2;
 }
 
-.m-clipped,
-.m-clipped body {
+.m-clipped, .m-clipped body {
   @apply overflow-hidden lg:overflow-visible;
 }
 
@@ -28,7 +27,6 @@ li.stack-item:not(:last-child):after {
   @apply p-0;
 }
 
-.main-navbar,
-.app-sidebar-brand {
+.main-navbar, .app-sidebar-brand {
   box-shadow: 0px -1px 40px rgba(112, 144, 176, 0.2);
 }

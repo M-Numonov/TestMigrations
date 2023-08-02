@@ -33,7 +33,7 @@
   }
 
   th.sortable:before {
-    font-family: 'Material Design Icons';
+    font-family: "Material Design Icons";
     position: absolute;
     right: 3px;
     font-size: 1rem;
@@ -61,8 +61,7 @@
     @apply border-b-0;
   }
 
-  tbody tr,
-  tbody tr:nth-child(odd) {
+  tbody tr, tbody tr:nth-child(odd) {
     @apply lg:hover:bg-pavitra-300/70;
   }
 
@@ -78,4 +77,5 @@
   tbody tr td {
     @apply text-sm font-normal text-pavitra-900;
   }
+
 }

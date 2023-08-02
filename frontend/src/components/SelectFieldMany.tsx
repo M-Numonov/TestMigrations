@@ -1,22 +1,16 @@
-import React, { useEffect, useId, useState } from 'react';
+import React, {useEffect, useId, useState} from 'react';
 import AsyncSelect from 'react-select/async';
 import axios from 'axios';
 
-export const SelectFieldMany = ({
-  options,
-  field,
-  form,
-  itemRef,
-  showField,
-}) => {
+export const SelectFieldMany = ({ options, field, form, itemRef, showField }) => {
   const [value, setValue] = useState([]);
 
   useEffect(() => {
     if (options) {
       setValue(options.map((el) => ({ value: el.id, label: el[showField] })));
       form.setFieldValue(
-        field.name,
-        options.map((el) => ({ value: el.id, label: el[showField] })),
+          field.name,
+          options.map((el) => ({ value: el.id, label: el[showField] })),
       );
     }
   }, [options]);
@@ -27,10 +21,10 @@ export const SelectFieldMany = ({
   });
 
   const handleChange = (data: any) => {
-    setValue(data);
+    setValue(data)
     form.setFieldValue(
-      field.name,
-      data.map((el) => el.value),
+        field.name,
+        data.map(el => (el.value)),
     );
   };
 
@@ -39,16 +33,16 @@ export const SelectFieldMany = ({
     return data.data.map(mapResponseToValuesAndLabels);
   }
   return (
-    <AsyncSelect
-      classNames={{
-        control: () => 'px-1 py-2',
-      }}
-      instanceId={useId()}
-      value={value}
-      isMulti
-      loadOptions={callApi}
-      onChange={handleChange}
-      defaultOptions
-    />
+      <AsyncSelect
+          classNames={{
+            control: () => 'px-1 py-2',
+          }}
+          instanceId={useId()}
+          value={value}
+          isMulti
+          loadOptions={callApi}
+          onChange={handleChange}
+          defaultOptions
+      />
   );
 };

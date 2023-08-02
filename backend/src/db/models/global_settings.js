@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const global_settings = sequelize.define(
     'global_settings',
     {
@@ -14,16 +14,19 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      name: {
+name: {
         type: DataTypes.TEXT,
+
       },
 
-      subscription_expiry_notification_days: {
+subscription_expiry_notification_days: {
         type: DataTypes.INTEGER,
+
       },
 
-      billing_cycle_grace_period: {
+billing_cycle_grace_period: {
         type: DataTypes.INTEGER,
+
       },
 
       importHash: {
@@ -40,6 +43,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   global_settings.associate = (db) => {
+
     db.global_settings.belongsTo(db.users, {
       as: 'createdBy',
     });
@@ -51,3 +55,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return global_settings;
 };
+

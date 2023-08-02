@@ -11,16 +11,19 @@ module.exports = {
         const transaction = await queryInterface.sequelize.transaction();
         try {
 
+                    await queryInterface.removeColumn(
+                        'subscription_plans',
+                        'billing_cycle',
+                        { transaction }
+                    );
+
                     await queryInterface.addColumn(
                       'subscription_plans',
-                      'next_subscription_planId',
+                      'billing_cycle',
                       {
-                          type: Sequelize.DataTypes.UUID,
+                          type: Sequelize.DataTypes.ENUM,
 
-                            references: {
-                                model: 'subscription_plans',
-                                key: 'id',
-                            },
+                            values: ['30','90','365'],
 
                       },
                       { transaction }
@@ -46,8 +49,20 @@ module.exports = {
 
                     await queryInterface.removeColumn(
                         'subscription_plans',
-                        'next_subscription_planId',
+                        'billing_cycle',
                         { transaction }
+                    );
+
+                    await queryInterface.addColumn(
+                      'subscription_plans',
+                      'billing_cycle',
+                      {
+                          type: Sequelize.DataTypes.ENUM,
+
+                            values: ['monthly','yearly'],
+
+                      },
+                      { transaction }
                     );
 
             await transaction.commit();
