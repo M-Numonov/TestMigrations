@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   const customers = sequelize.define(
     'customers',
     {
@@ -14,19 +14,16 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
-name: {
+      name: {
         type: DataTypes.TEXT,
-
       },
 
-current_period_starts: {
+      current_period_starts: {
         type: DataTypes.DATE,
-
       },
 
-current_period_ends: {
+      current_period_ends: {
         type: DataTypes.DATE,
-
       },
 
       importHash: {
@@ -43,7 +40,6 @@ current_period_ends: {
   );
 
   customers.associate = (db) => {
-
     db.customers.belongsTo(db.subscription_plans, {
       as: 'next_subscription_plan',
       foreignKey: {
@@ -63,4 +59,3 @@ current_period_ends: {
 
   return customers;
 };
-

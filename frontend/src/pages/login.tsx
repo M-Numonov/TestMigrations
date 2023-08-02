@@ -15,7 +15,7 @@ import { getPageTitle } from '../config';
 import { findMe, loginUser } from '../stores/authSlice';
 import { useAppDispatch, useAppSelector } from '../stores/hooks';
 import Link from 'next/link';
-import {toast, ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 export default function Login() {
@@ -23,7 +23,7 @@ export default function Login() {
   const dispatch = useAppDispatch();
   const notify = (type, msg) => toast(msg, { type });
   const { currentUser, isFetching, errorMessage, token } = useAppSelector(
-      (state) => state.auth,
+    (state) => state.auth,
   );
 
   useEffect(() => {
@@ -35,76 +35,75 @@ export default function Login() {
     }
   }, [currentUser, token, dispatch, router]);
   useEffect(() => {
-    if(errorMessage){
-      notify('error', errorMessage)
+    if (errorMessage) {
+      notify('error', errorMessage);
     }
-
-  }, [errorMessage])
+  }, [errorMessage]);
 
   const handleSubmit = async (value) => {
-    const {remember, ...rest} = value
+    const { remember, ...rest } = value;
     await dispatch(loginUser(rest));
   };
 
   return (
-      <>
-        <Head>
-          <title>{getPageTitle('Login')}</title>
-        </Head>
+    <>
+      <Head>
+        <title>{getPageTitle('Login')}</title>
+      </Head>
 
-        <SectionFullScreen bg='violet'>
-          <CardBox className='w-11/12 md:w-7/12 lg:w-6/12 xl:w-4/12'>
-            <Formik
-                initialValues={{
-                  email: 'admin@flatlogic.com',
-                  password: 'password',
-                  remember: true,
-                }}
-                onSubmit={(values) => handleSubmit(values)}
-            >
-              <Form>
-                <FormField label='Login' help='Please enter your login'>
-                  <Field name='email' />
-                </FormField>
+      <SectionFullScreen bg='violet'>
+        <CardBox className='w-11/12 md:w-7/12 lg:w-6/12 xl:w-4/12'>
+          <Formik
+            initialValues={{
+              email: 'admin@flatlogic.com',
+              password: 'password',
+              remember: true,
+            }}
+            onSubmit={(values) => handleSubmit(values)}
+          >
+            <Form>
+              <FormField label='Login' help='Please enter your login'>
+                <Field name='email' />
+              </FormField>
 
-                <FormField label='Password' help='Please enter your password'>
-                  <Field name='password' type='password' />
-                </FormField>
+              <FormField label='Password' help='Please enter your password'>
+                <Field name='password' type='password' />
+              </FormField>
 
-                <div className={'flex justify-between'}>
-                  <FormCheckRadio type='checkbox' label='Remember'>
-                    <Field type='checkbox' name='remember' />
-                  </FormCheckRadio>
+              <div className={'flex justify-between'}>
+                <FormCheckRadio type='checkbox' label='Remember'>
+                  <Field type='checkbox' name='remember' />
+                </FormCheckRadio>
 
-                  <Link className={'text-blue-600'} href={'/forgot'}>
-                    Forgot password?
-                  </Link>
-                </div>
+                <Link className={'text-blue-600'} href={'/forgot'}>
+                  Forgot password?
+                </Link>
+              </div>
 
-                <BaseDivider />
+              <BaseDivider />
 
-                <BaseButtons>
-                  <BaseButton
-                      className={'w-full'}
-                      type='submit'
-                      label={isFetching ? 'Loading...' : 'Login'}
-                      color='info'
-                      disabled={isFetching}
-                  />
-                </BaseButtons>
-                <br />
-                <p className={'text-center text-gray-600'}>
-                  Don’t have account yet?{' '}
-                  <Link className={'text-blue-600'} href={'/register'}>
-                    New Account
-                  </Link>
-                </p>
-              </Form>
-            </Formik>
-          </CardBox>
-        </SectionFullScreen>
-        <ToastContainer />
-      </>
+              <BaseButtons>
+                <BaseButton
+                  className={'w-full'}
+                  type='submit'
+                  label={isFetching ? 'Loading...' : 'Login'}
+                  color='info'
+                  disabled={isFetching}
+                />
+              </BaseButtons>
+              <br />
+              <p className={'text-center text-gray-600'}>
+                Don’t have account yet?{' '}
+                <Link className={'text-blue-600'} href={'/register'}>
+                  New Account
+                </Link>
+              </p>
+            </Form>
+          </Formik>
+        </CardBox>
+      </SectionFullScreen>
+      <ToastContainer />
+    </>
   );
 }
 

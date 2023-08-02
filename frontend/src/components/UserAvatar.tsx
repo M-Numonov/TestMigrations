@@ -15,23 +15,22 @@ type Props = {
 };
 
 export default function UserAvatar({
-                                     username,
-                                     image,
-                                     avatar,
-                                     className = '',
-                                     children,
-                                   }: Props) {
-
-  const avatarImage = (image && image[0]) ? `${image[0].publicUrl}` : '#';
+  username,
+  image,
+  avatar,
+  className = '',
+  children,
+}: Props) {
+  const avatarImage = image && image[0] ? `${image[0].publicUrl}` : '#';
 
   return (
-      <div className={className}>
-        <img
-            src={avatarImage}
-            alt={username}
-            className='rounded-full block h-auto w-full max-w-full bg-gray-100 dark:bg-slate-800'
-        />
-        {children}
-      </div>
+    <div className={className}>
+      <img
+        src={avatarImage}
+        alt={username}
+        className='rounded-full block h-auto w-full max-w-full bg-gray-100 dark:bg-slate-800'
+      />
+      {children}
+    </div>
   );
 }

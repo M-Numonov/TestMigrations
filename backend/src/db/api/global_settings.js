@@ -1,4 +1,3 @@
-
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -8,42 +7,30 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class Global_settingsDBApi {
-
   static async create(data, options) {
-  const currentUser = (options && options.currentUser) || { id: null };
-  const transaction = (options && options.transaction) || undefined;
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
 
-  const global_settings = await db.global_settings.create(
-  {
-  id: data.id || undefined,
+    const global_settings = await db.global_settings.create(
+      {
+        id: data.id || undefined,
 
-    name: data.name
-    ||
-    null
-,
+        name: data.name || null,
+        subscription_expiry_notification_days:
+          data.subscription_expiry_notification_days || null,
+        billing_cycle_grace_period: data.billing_cycle_grace_period || null,
+        importHash: data.importHash || null,
+        createdById: currentUser.id,
+        updatedById: currentUser.id,
+      },
+      { transaction },
+    );
 
-    subscription_expiry_notification_days: data.subscription_expiry_notification_days
-    ||
-    null
-,
-
-    billing_cycle_grace_period: data.billing_cycle_grace_period
-    ||
-    null
-,
-
-  importHash: data.importHash || null,
-  createdById: currentUser.id,
-  updatedById: currentUser.id,
-  },
-  { transaction },
-  );
-
-  return global_settings;
+    return global_settings;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
     const global_settings = await db.global_settings.findByPk(id, {
@@ -52,44 +39,35 @@ module.exports = class Global_settingsDBApi {
 
     await global_settings.update(
       {
-
-        name: data.name
-        ||
-        null
-,
-
-        subscription_expiry_notification_days: data.subscription_expiry_notification_days
-        ||
-        null
-,
-
-        billing_cycle_grace_period: data.billing_cycle_grace_period
-        ||
-        null
-,
-
+        name: data.name || null,
+        subscription_expiry_notification_days:
+          data.subscription_expiry_notification_days || null,
+        billing_cycle_grace_period: data.billing_cycle_grace_period || null,
         updatedById: currentUser.id,
       },
-      {transaction},
+      { transaction },
     );
 
     return global_settings;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || {id: null};
+    const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
     const global_settings = await db.global_settings.findByPk(id, options);
 
-    await global_settings.update({
-      deletedBy: currentUser.id
-    }, {
-      transaction,
-    });
+    await global_settings.update(
+      {
+        deletedBy: currentUser.id,
+      },
+      {
+        transaction,
+      },
+    );
 
     await global_settings.destroy({
-      transaction
+      transaction,
     });
 
     return global_settings;
@@ -107,7 +85,7 @@ module.exports = class Global_settingsDBApi {
       return global_settings;
     }
 
-    const output = global_settings.get({plain: true});
+    const output = global_settings.get({ plain: true });
 
     return output;
   }
@@ -123,9 +101,7 @@ module.exports = class Global_settingsDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -138,11 +114,7 @@ module.exports = class Global_settingsDBApi {
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike(
-            'global_settings',
-            'name',
-            filter.name,
-          ),
+          [Op.and]: Utils.ilike('global_settings', 'name', filter.name),
         };
       }
 
@@ -202,9 +174,7 @@ module.exports = class Global_settingsDBApi {
       ) {
         where = {
           ...where,
-          active:
-            filter.active === true ||
-            filter.active === 'true',
+          active: filter.active === true || filter.active === 'true',
         };
       }
 
@@ -233,35 +203,39 @@ module.exports = class Global_settingsDBApi {
       }
     }
 
-    let { rows, count } = options?.countOnly ? {rows: [], count: await db.global_settings.count({
+    let { rows, count } = options?.countOnly
+      ? {
+          rows: [],
+          count: await db.global_settings.count({
             where,
             include,
             distinct: true,
             limit: limit ? Number(limit) : undefined,
             offset: offset ? Number(offset) : undefined,
-            order: (filter.field && filter.sort)
+            order:
+              filter.field && filter.sort
                 ? [[filter.field, filter.sort]]
                 : [['createdAt', 'desc']],
             transaction,
-        },
-    )} : await db.global_settings.findAndCountAll(
-        {
-            where,
-            include,
-            distinct: true,
-            limit: limit ? Number(limit) : undefined,
-            offset: offset ? Number(offset) : undefined,
-            order: (filter.field && filter.sort)
-                ? [[filter.field, filter.sort]]
-                : [['createdAt', 'desc']],
-            transaction,
-        },
-    );
+          }),
+        }
+      : await db.global_settings.findAndCountAll({
+          where,
+          include,
+          distinct: true,
+          limit: limit ? Number(limit) : undefined,
+          offset: offset ? Number(offset) : undefined,
+          order:
+            filter.field && filter.sort
+              ? [[filter.field, filter.sort]]
+              : [['createdAt', 'desc']],
+          transaction,
+        });
 
-//    rows = await this._fillWithRelationsAndFilesForRows(
-//      rows,
-//      options,
-//    );
+    //    rows = await this._fillWithRelationsAndFilesForRows(
+    //      rows,
+    //      options,
+    //    );
 
     return { rows, count };
   }
@@ -273,17 +247,13 @@ module.exports = class Global_settingsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike(
-            'global_settings',
-            'id',
-            query,
-          ),
+          Utils.ilike('global_settings', 'id', query),
         ],
       };
     }
 
     const records = await db.global_settings.findAll({
-      attributes: [ 'id', 'id' ],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -294,6 +264,4 @@ module.exports = class Global_settingsDBApi {
       label: record.id,
     }));
   }
-
 };
-
