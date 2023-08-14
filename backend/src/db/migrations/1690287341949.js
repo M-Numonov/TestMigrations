@@ -1,70 +1,66 @@
 module.exports = {
+  /**
+   * @param {QueryInterface} queryInterface
+   * @param {Sequelize} Sequelize
+   * @returns {Promise<void>}
+   */
+  async up(queryInterface, Sequelize) {
     /**
-     * @param {QueryInterface} queryInterface
-     * @param {Sequelize} Sequelize
-     * @returns {Promise<void>}
+     * @type {Transaction}
      */
-    async up(queryInterface, Sequelize) {
-        /**
-         * @type {Transaction}
-         */
-        const transaction = await queryInterface.sequelize.transaction();
-        try {
+    const transaction = await queryInterface.sequelize.transaction();
+    try {
+      await queryInterface.addColumn(
+        'global_settings',
+        'subscription_expiry_notification_days',
+        {
+          type: Sequelize.DataTypes.INTEGER,
+        },
+        { transaction },
+      );
 
-                    await queryInterface.addColumn(
-                      'global_settings',
-                      'subscription_expiry_notification_days',
-                      {
-                          type: Sequelize.DataTypes.INTEGER,
+      await queryInterface.addColumn(
+        'global_settings',
+        'billing_cycle_grace_period',
+        {
+          type: Sequelize.DataTypes.INTEGER,
+        },
+        { transaction },
+      );
 
-                      },
-                      { transaction }
-                    );
-
-                    await queryInterface.addColumn(
-                      'global_settings',
-                      'billing_cycle_grace_period',
-                      {
-                          type: Sequelize.DataTypes.INTEGER,
-
-                      },
-                      { transaction }
-                    );
-
-            await transaction.commit();
-        } catch (err) {
-            await transaction.rollback();
-            throw err;
-        }
-    },
-    /**
-     * @param {QueryInterface} queryInterface
-     * @param {Sequelize} Sequelize
-     * @returns {Promise<void>}
-     */
-    async down(queryInterface, Sequelize) {
-        /**
-         * @type {Transaction}
-         */
-        const transaction = await queryInterface.sequelize.transaction();
-        try {
-
-                    await queryInterface.removeColumn(
-                        'global_settings',
-                        'billing_cycle_grace_period',
-                        { transaction }
-                    );
-
-                    await queryInterface.removeColumn(
-                        'global_settings',
-                        'subscription_expiry_notification_days',
-                        { transaction }
-                    );
-
-            await transaction.commit();
-        } catch (err) {
-            await transaction.rollback();
-            throw err;
-        }
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
     }
+  },
+  /**
+   * @param {QueryInterface} queryInterface
+   * @param {Sequelize} Sequelize
+   * @returns {Promise<void>}
+   */
+  async down(queryInterface, Sequelize) {
+    /**
+     * @type {Transaction}
+     */
+    const transaction = await queryInterface.sequelize.transaction();
+    try {
+      await queryInterface.removeColumn(
+        'global_settings',
+        'billing_cycle_grace_period',
+        { transaction },
+      );
+
+      await queryInterface.removeColumn(
+        'global_settings',
+        'subscription_expiry_notification_days',
+        { transaction },
+      );
+
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
+    }
+  },
 };

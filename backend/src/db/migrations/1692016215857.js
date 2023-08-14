@@ -10,9 +10,14 @@ module.exports = {
      */
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.removeColumn('customers', 'next_subscription_plan', {
-        transaction,
-      });
+      await queryInterface.addColumn(
+        'subscription_plans',
+        'stripe_price_id',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
 
       await transaction.commit();
     } catch (err) {
@@ -31,12 +36,9 @@ module.exports = {
      */
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.addColumn(
-        'customers',
-        'next_subscription_plan',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
+      await queryInterface.removeColumn(
+        'subscription_plans',
+        'stripe_price_id',
         { transaction },
       );
 

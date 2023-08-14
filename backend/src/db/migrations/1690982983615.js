@@ -1,56 +1,51 @@
 module.exports = {
+  /**
+   * @param {QueryInterface} queryInterface
+   * @param {Sequelize} Sequelize
+   * @returns {Promise<void>}
+   */
+  async up(queryInterface, Sequelize) {
     /**
-     * @param {QueryInterface} queryInterface
-     * @param {Sequelize} Sequelize
-     * @returns {Promise<void>}
+     * @type {Transaction}
      */
-    async up(queryInterface, Sequelize) {
-        /**
-         * @type {Transaction}
-         */
-        const transaction = await queryInterface.sequelize.transaction();
-        try {
+    const transaction = await queryInterface.sequelize.transaction();
+    try {
+      await queryInterface.addColumn(
+        'subscription_plans',
+        'billing_cycle',
+        {
+          type: Sequelize.DataTypes.ENUM,
 
-                    await queryInterface.addColumn(
-                      'subscription_plans',
-                      'billing_cycle',
-                      {
-                          type: Sequelize.DataTypes.ENUM,
+          values: ['monthly', 'yearly'],
+        },
+        { transaction },
+      );
 
-                            values: ['monthly','yearly'],
-
-                      },
-                      { transaction }
-                    );
-
-            await transaction.commit();
-        } catch (err) {
-            await transaction.rollback();
-            throw err;
-        }
-    },
-    /**
-     * @param {QueryInterface} queryInterface
-     * @param {Sequelize} Sequelize
-     * @returns {Promise<void>}
-     */
-    async down(queryInterface, Sequelize) {
-        /**
-         * @type {Transaction}
-         */
-        const transaction = await queryInterface.sequelize.transaction();
-        try {
-
-                    await queryInterface.removeColumn(
-                        'subscription_plans',
-                        'billing_cycle',
-                        { transaction }
-                    );
-
-            await transaction.commit();
-        } catch (err) {
-            await transaction.rollback();
-            throw err;
-        }
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
     }
+  },
+  /**
+   * @param {QueryInterface} queryInterface
+   * @param {Sequelize} Sequelize
+   * @returns {Promise<void>}
+   */
+  async down(queryInterface, Sequelize) {
+    /**
+     * @type {Transaction}
+     */
+    const transaction = await queryInterface.sequelize.transaction();
+    try {
+      await queryInterface.removeColumn('subscription_plans', 'billing_cycle', {
+        transaction,
+      });
+
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
+    }
+  },
 };

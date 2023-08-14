@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   const subscription_plans = sequelize.define(
     'subscription_plans',
     {
@@ -14,29 +14,22 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
-name: {
+      name: {
         type: DataTypes.TEXT,
-
       },
 
-trial_period: {
+      trial_period: {
         type: DataTypes.INTEGER,
-
       },
 
-billing_cycle: {
+      billing_cycle: {
         type: DataTypes.ENUM,
 
-        values: [
+        values: ['30', '90', '365'],
+      },
 
-"30",
-
-"90",
-
-"365"
-
-        ],
-
+      stripe_price_id: {
+        type: DataTypes.TEXT,
       },
 
       importHash: {
@@ -53,7 +46,6 @@ billing_cycle: {
   );
 
   subscription_plans.associate = (db) => {
-
     db.subscription_plans.belongsTo(db.users, {
       as: 'createdBy',
     });
@@ -65,4 +57,3 @@ billing_cycle: {
 
   return subscription_plans;
 };
-

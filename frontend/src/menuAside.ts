@@ -9,8 +9,8 @@ import {
   mdiViewList,
   mdiPalette,
   mdiVuejs,
-} from '@mdi/js'
-import { MenuAsideItem } from './interfaces'
+} from '@mdi/js';
+import { MenuAsideItem } from './interfaces';
 
 const menuAside: MenuAsideItem[] = [
   {
@@ -20,40 +20,40 @@ const menuAside: MenuAsideItem[] = [
   },
 
   {
-      href: '/users/users-list',
-      label: 'Users',
-      icon: mdiTable,
-  }, 
+    href: '/users/users-list',
+    label: 'Users',
+    icon: mdiTable,
+  },
   {
-      href: '/subscription_plans/subscription_plans-list',
-      label: 'Subscription plans',
-      icon: mdiTable,
-  }, 
+    href: '/subscription_plans/subscription_plans-list',
+    label: 'Subscription plans',
+    icon: mdiTable,
+  },
   {
-      href: '/transactions/transactions-list',
-      label: 'Transactions',
-      icon: mdiTable,
-  }, 
+    href: '/transactions/transactions-list',
+    label: 'Transactions',
+    icon: mdiTable,
+  },
   {
-      href: '/customers/customers-list',
-      label: 'Customers',
-      icon: mdiTable,
-  }, 
+    href: '/customers/customers-list',
+    label: 'Customers',
+    icon: mdiTable,
+  },
   {
-      href: '/global_settings/global_settings-list',
-      label: 'Global settings',
-      icon: mdiTable,
-  }, 
+    href: '/global_settings/global_settings-list',
+    label: 'Global settings',
+    icon: mdiTable,
+  },
   {
     href: '/profile',
     label: 'Profile',
     icon: mdiAccountCircle,
   },
   {
-      href: '/api-docs',
-      label: 'Swagger API',
-      icon: mdiAccountCircle,
+    href: '/api-docs',
+    label: 'Swagger API',
+    icon: mdiAccountCircle,
   },
-]
+];
 
-export default menuAside
+export default menuAside;
