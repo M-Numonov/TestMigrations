@@ -36,6 +36,8 @@ module.exports = class UsersDBApi {
         passwordResetTokenExpiresAt:
           data.data.passwordResetTokenExpiresAt || null,
         provider: data.data.provider || null,
+        isFirstTimeSignIn: data.data.isFirstTimeSignIn || false,
+
         importHash: data.data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -89,6 +91,8 @@ module.exports = class UsersDBApi {
         passwordResetToken: data.passwordResetToken || null,
         passwordResetTokenExpiresAt: data.passwordResetTokenExpiresAt || null,
         provider: data.provider || null,
+        isFirstTimeSignIn: data.isFirstTimeSignIn || false,
+
         updatedById: currentUser.id,
       },
       { transaction },
@@ -315,6 +319,13 @@ module.exports = class UsersDBApi {
         where = {
           ...where,
           emailVerified: filter.emailVerified,
+        };
+      }
+
+      if (filter.isFirstTimeSignIn) {
+        where = {
+          ...where,
+          isFirstTimeSignIn: filter.isFirstTimeSignIn,
         };
       }
 
