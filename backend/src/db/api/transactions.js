@@ -18,6 +18,7 @@ module.exports = class TransactionsDBApi {
         name: data.name || null,
         amount: data.amount || null,
         quantity: data.quantity || null,
+        receipt_url: data.receipt_url || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -45,6 +46,7 @@ module.exports = class TransactionsDBApi {
         name: data.name || null,
         amount: data.amount || null,
         quantity: data.quantity || null,
+        receipt_url: data.receipt_url || null,
         updatedById: currentUser.id,
       },
       { transaction },
@@ -137,6 +139,17 @@ module.exports = class TransactionsDBApi {
         where = {
           ...where,
           [Op.and]: Utils.ilike('transactions', 'amount', filter.amount),
+        };
+      }
+
+      if (filter.receipt_url) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike(
+            'transactions',
+            'receipt_url',
+            filter.receipt_url,
+          ),
         };
       }
 
