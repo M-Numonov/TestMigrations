@@ -26,6 +26,13 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.DATE,
       },
 
+      addressAsProfile: {
+        type: DataTypes.BOOLEAN,
+
+        allowNull: false,
+        defaultValue: false,
+      },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,

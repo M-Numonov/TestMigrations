@@ -18,6 +18,8 @@ module.exports = class CustomersDBApi {
         name: data.name || null,
         current_period_starts: data.current_period_starts || null,
         current_period_ends: data.current_period_ends || null,
+        addressAsProfile: data.addressAsProfile || false,
+
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -48,6 +50,8 @@ module.exports = class CustomersDBApi {
         name: data.name || null,
         current_period_starts: data.current_period_starts || null,
         current_period_ends: data.current_period_ends || null,
+        addressAsProfile: data.addressAsProfile || false,
+
         updatedById: currentUser.id,
       },
       { transaction },
@@ -193,6 +197,13 @@ module.exports = class CustomersDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
+        };
+      }
+
+      if (filter.addressAsProfile) {
+        where = {
+          ...where,
+          addressAsProfile: filter.addressAsProfile,
         };
       }
 
