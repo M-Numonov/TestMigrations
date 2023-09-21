@@ -30,6 +30,54 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
+      subscription_plan_name: {
+        type: DataTypes.TEXT,
+      },
+
+      subscription_plan_status: {
+        type: DataTypes.TEXT,
+      },
+
+      subscription_plan_type: {
+        type: DataTypes.TEXT,
+      },
+
+      subscription_plan_activation_date: {
+        type: DataTypes.TEXT,
+      },
+
+      subscription_plan_expiry_date: {
+        type: DataTypes.TEXT,
+      },
+
+      customer_name: {
+        type: DataTypes.TEXT,
+      },
+
+      customer_company_name: {
+        type: DataTypes.TEXT,
+      },
+
+      customer_email: {
+        type: DataTypes.TEXT,
+      },
+
+      customer_phone_number: {
+        type: DataTypes.TEXT,
+      },
+
+      customer_country: {
+        type: DataTypes.TEXT,
+      },
+
+      customer_city: {
+        type: DataTypes.TEXT,
+      },
+
+      customer_address: {
+        type: DataTypes.TEXT,
+      },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
