@@ -20,6 +20,8 @@ module.exports = class CustomersDBApi {
         current_period_ends: data.current_period_ends || null,
         addressAsProfile: data.addressAsProfile || false,
 
+        card_token: data.card_token || null,
+        card_last_four_digits: data.card_last_four_digits || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -52,6 +54,8 @@ module.exports = class CustomersDBApi {
         current_period_ends: data.current_period_ends || null,
         addressAsProfile: data.addressAsProfile || false,
 
+        card_token: data.card_token || null,
+        card_last_four_digits: data.card_last_four_digits || null,
         updatedById: currentUser.id,
       },
       { transaction },
@@ -137,6 +141,24 @@ module.exports = class CustomersDBApi {
         where = {
           ...where,
           [Op.and]: Utils.ilike('customers', 'name', filter.name),
+        };
+      }
+
+      if (filter.card_token) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('customers', 'card_token', filter.card_token),
+        };
+      }
+
+      if (filter.card_last_four_digits) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike(
+            'customers',
+            'card_last_four_digits',
+            filter.card_last_four_digits,
+          ),
         };
       }
 

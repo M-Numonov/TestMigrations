@@ -33,6 +33,14 @@ module.exports = function (sequelize, DataTypes) {
         defaultValue: false,
       },
 
+      card_token: {
+        type: DataTypes.TEXT,
+      },
+
+      card_last_four_digits: {
+        type: DataTypes.TEXT,
+      },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
