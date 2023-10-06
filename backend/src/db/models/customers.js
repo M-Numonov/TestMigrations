@@ -41,6 +41,23 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
+      expiry_month: {
+        type: DataTypes.DATEONLY,
+
+        get: function () {
+          return this.getDataValue('expiry_month')
+            ? moment.utc(this.getDataValue('expiry_month')).format('YYYY-MM-DD')
+            : null;
+        },
+      },
+
+      card_expiry_notified: {
+        type: DataTypes.BOOLEAN,
+
+        allowNull: false,
+        defaultValue: false,
+      },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,

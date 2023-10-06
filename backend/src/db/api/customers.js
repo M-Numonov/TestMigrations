@@ -22,6 +22,9 @@ module.exports = class CustomersDBApi {
 
         card_token: data.card_token || null,
         card_last_four_digits: data.card_last_four_digits || null,
+        expiry_month: data.expiry_month || null,
+        card_expiry_notified: data.card_expiry_notified || false,
+
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -56,6 +59,9 @@ module.exports = class CustomersDBApi {
 
         card_token: data.card_token || null,
         card_last_four_digits: data.card_last_four_digits || null,
+        expiry_month: data.expiry_month || null,
+        card_expiry_notified: data.card_expiry_notified || false,
+
         updatedById: currentUser.id,
       },
       { transaction },
@@ -210,6 +216,30 @@ module.exports = class CustomersDBApi {
         }
       }
 
+      if (filter.expiry_monthRange) {
+        const [start, end] = filter.expiry_monthRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            expiry_month: {
+              ...where.expiry_month,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            expiry_month: {
+              ...where.expiry_month,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -226,6 +256,13 @@ module.exports = class CustomersDBApi {
         where = {
           ...where,
           addressAsProfile: filter.addressAsProfile,
+        };
+      }
+
+      if (filter.card_expiry_notified) {
+        where = {
+          ...where,
+          card_expiry_notified: filter.card_expiry_notified,
         };
       }
 
