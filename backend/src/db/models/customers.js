@@ -58,6 +58,10 @@ module.exports = function (sequelize, DataTypes) {
         defaultValue: false,
       },
 
+      next_amount: {
+        type: DataTypes.TEXT,
+      },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,

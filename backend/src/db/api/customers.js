@@ -25,6 +25,7 @@ module.exports = class CustomersDBApi {
         expiry_month: data.expiry_month || null,
         card_expiry_notified: data.card_expiry_notified || false,
 
+        next_amount: data.next_amount || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -62,6 +63,7 @@ module.exports = class CustomersDBApi {
         expiry_month: data.expiry_month || null,
         card_expiry_notified: data.card_expiry_notified || false,
 
+        next_amount: data.next_amount || null,
         updatedById: currentUser.id,
       },
       { transaction },
@@ -165,6 +167,13 @@ module.exports = class CustomersDBApi {
             'card_last_four_digits',
             filter.card_last_four_digits,
           ),
+        };
+      }
+
+      if (filter.next_amount) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('customers', 'next_amount', filter.next_amount),
         };
       }
 
