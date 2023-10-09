@@ -26,6 +26,9 @@ module.exports = class CustomersDBApi {
         card_expiry_notified: data.card_expiry_notified || false,
 
         next_amount: data.next_amount || null,
+        annual_billing_cycle_notified:
+          data.annual_billing_cycle_notified || false,
+
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -64,6 +67,9 @@ module.exports = class CustomersDBApi {
         card_expiry_notified: data.card_expiry_notified || false,
 
         next_amount: data.next_amount || null,
+        annual_billing_cycle_notified:
+          data.annual_billing_cycle_notified || false,
+
         updatedById: currentUser.id,
       },
       { transaction },
@@ -272,6 +278,13 @@ module.exports = class CustomersDBApi {
         where = {
           ...where,
           card_expiry_notified: filter.card_expiry_notified,
+        };
+      }
+
+      if (filter.annual_billing_cycle_notified) {
+        where = {
+          ...where,
+          annual_billing_cycle_notified: filter.annual_billing_cycle_notified,
         };
       }
 
