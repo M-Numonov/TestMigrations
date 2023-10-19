@@ -29,6 +29,10 @@ module.exports = class CustomersDBApi {
         annual_billing_cycle_notified:
           data.annual_billing_cycle_notified || false,
 
+        card_expiry_notify_time: data.card_expiry_notify_time || null,
+        card_expiry_notification_closed:
+          data.card_expiry_notification_closed || false,
+
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -69,6 +73,10 @@ module.exports = class CustomersDBApi {
         next_amount: data.next_amount || null,
         annual_billing_cycle_notified:
           data.annual_billing_cycle_notified || false,
+
+        card_expiry_notify_time: data.card_expiry_notify_time || null,
+        card_expiry_notification_closed:
+          data.card_expiry_notification_closed || false,
 
         updatedById: currentUser.id,
       },
@@ -255,6 +263,30 @@ module.exports = class CustomersDBApi {
         }
       }
 
+      if (filter.card_expiry_notify_timeRange) {
+        const [start, end] = filter.card_expiry_notify_timeRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            card_expiry_notify_time: {
+              ...where.card_expiry_notify_time,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            card_expiry_notify_time: {
+              ...where.card_expiry_notify_time,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -285,6 +317,14 @@ module.exports = class CustomersDBApi {
         where = {
           ...where,
           annual_billing_cycle_notified: filter.annual_billing_cycle_notified,
+        };
+      }
+
+      if (filter.card_expiry_notification_closed) {
+        where = {
+          ...where,
+          card_expiry_notification_closed:
+            filter.card_expiry_notification_closed,
         };
       }
 

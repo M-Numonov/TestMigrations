@@ -69,6 +69,17 @@ module.exports = function (sequelize, DataTypes) {
         defaultValue: false,
       },
 
+      card_expiry_notify_time: {
+        type: DataTypes.DATE,
+      },
+
+      card_expiry_notification_closed: {
+        type: DataTypes.BOOLEAN,
+
+        allowNull: false,
+        defaultValue: false,
+      },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
