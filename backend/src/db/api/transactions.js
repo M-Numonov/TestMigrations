@@ -33,7 +33,6 @@ module.exports = class TransactionsDBApi {
         customer_country: data.customer_country || null,
         customer_city: data.customer_city || null,
         customer_address: data.customer_address || null,
-        stripeTransactionId: data.stripeTransactionId || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -76,7 +75,6 @@ module.exports = class TransactionsDBApi {
         customer_country: data.customer_country || null,
         customer_city: data.customer_city || null,
         customer_address: data.customer_address || null,
-        stripeTransactionId: data.stripeTransactionId || null,
         updatedById: currentUser.id,
       },
       { transaction },
@@ -311,17 +309,6 @@ module.exports = class TransactionsDBApi {
             'transactions',
             'customer_address',
             filter.customer_address,
-          ),
-        };
-      }
-
-      if (filter.stripeTransactionId) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike(
-            'transactions',
-            'stripeTransactionId',
-            filter.stripeTransactionId,
           ),
         };
       }
