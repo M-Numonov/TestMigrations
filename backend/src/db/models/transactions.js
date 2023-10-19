@@ -78,6 +78,10 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
+      stripeTransactionId: {
+        type: DataTypes.TEXT,
+      },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
