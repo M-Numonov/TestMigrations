@@ -26,6 +26,13 @@ module.exports = class Subscription_plansDBApi {
       { transaction },
     );
 
+    await subscription_plans.setReplacement_plan(
+      data.replacement_plan || null,
+      {
+        transaction,
+      },
+    );
+
     return subscription_plans;
   }
 
@@ -46,6 +53,13 @@ module.exports = class Subscription_plansDBApi {
         updatedById: currentUser.id,
       },
       { transaction },
+    );
+
+    await subscription_plans.setReplacement_plan(
+      data.replacement_plan || null,
+      {
+        transaction,
+      },
     );
 
     return subscription_plans;
@@ -90,6 +104,10 @@ module.exports = class Subscription_plansDBApi {
 
     const output = subscription_plans.get({ plain: true });
 
+    output.replacement_plan = await subscription_plans.getReplacement_plan({
+      transaction,
+    });
+
     return output;
   }
 
@@ -104,7 +122,12 @@ module.exports = class Subscription_plansDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+      {
+        model: db.subscription_plans,
+        as: 'replacement_plan',
+      },
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -172,6 +195,17 @@ module.exports = class Subscription_plansDBApi {
         where = {
           ...where,
           billing_cycle: filter.billing_cycle,
+        };
+      }
+
+      if (filter.replacement_plan) {
+        var listItems = filter.replacement_plan.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          replacement_planId: { [Op.or]: listItems },
         };
       }
 

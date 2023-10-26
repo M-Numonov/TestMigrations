@@ -46,6 +46,14 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   subscription_plans.associate = (db) => {
+    db.subscription_plans.belongsTo(db.subscription_plans, {
+      as: 'replacement_plan',
+      foreignKey: {
+        name: 'replacement_planId',
+      },
+      constraints: false,
+    });
+
     db.subscription_plans.belongsTo(db.users, {
       as: 'createdBy',
     });
